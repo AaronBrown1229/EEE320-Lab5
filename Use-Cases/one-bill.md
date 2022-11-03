@@ -6,4 +6,4 @@
 
 *Alternates and exceptions:*
 - At Step 1 the Server may select the button labeled "Split Bills". The system will then add the table number, all ordered items at the table, total cost and the total cost divided by size of party on to the printer tape.
-- At Step 1 the server may select the button labeled "Separate Bills". The system will then add the table number, each seat number, all ordered items under the seat that ordered it and the total cost for each person.
+- At Step 1 the Server may select the button labeled "Separate Bills". The system will then add the table number, each seat number, all ordered items under the seat that ordered it and the total cost for each person.
