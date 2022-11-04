@@ -80,7 +80,10 @@ class ServerView(RestaurantView):
 
             self.canvas.tag_bind(seat_id, '<Button-1>', handler)
         self.make_button('Done', action=lambda event: self.controller.done())
+        # removed the Create Bills button and put three buttons to create the bills insted
+        # this removes the need for a bill controller
         if table.has_any_active_orders():
+            #makes the Separate Bills
             self.make_button('Separate Bills',
                 action=lambda event: self.controller.make_separate_bills(self.printer_window),
                 location=BUTTON_BOTTOM_LEFT)
