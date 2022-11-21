@@ -47,6 +47,20 @@ class Table:
     def order_for(self, seat):
         return self.orders[seat]
 
+    def one_bill(self):
+
+        # make a list of seats that have orders
+        # make an outer for loop with that list
+        # the nested loop will be to cycle through the items orderd by each seat
+
+        item_array = []
+        item_cost = []
+
+        for i in self.orders:
+            for j in i.items:
+                item_array.append(j.details.name)
+                item_cost.append(j.details.price)
+        return item_array, item_cost
 
 class Order:
 

@@ -45,6 +45,25 @@ class TableController(Controller):
         # actual printing should happen in the (new) controller, not here.
         printer.print(f'Set up bills for table {self.restaurant.tables.index(self.table)}')
 
+    def make_one_bill(self, printer):
+
+        """
+        tell model.table to get the table number and all of it's ordered items into an array 
+        then, print the list and the total cost of the order from the table
+        """
+
+        # is now a list of orders that have been orderd
+        printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
+
+        one_bill = []
+        (ordered_items, item_cost) = self.table.one_bill()
+
+        # print the name and price of each item
+        for i in ordered_items, item_cost:
+            printer.print(f'\t Item: {i} Price: {i} \n')
+
+
+
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))
         self.view.update()
@@ -77,3 +96,4 @@ class OrderController(Controller):
         self.order.remove_unordered_items()
         self.view.set_controller(TableController(self.view, self.restaurant, self.table))
         self.restaurant.notify_views()
+
