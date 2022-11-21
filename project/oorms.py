@@ -2,10 +2,8 @@
 Provides the user interface for the Object-oriented Restaurant Management
 application (OORMS). This includes the server's view and a window simulating
 the tape of a bill printer.
-
 Submitting lab group: [your names here]
 Submission date: [date here]
-
 Original code by EEE320 instructors.
 """
 
@@ -80,10 +78,21 @@ class ServerView(RestaurantView):
 
             self.canvas.tag_bind(seat_id, '<Button-1>', handler)
         self.make_button('Done', action=lambda event: self.controller.done())
+        # removed the Create Bills button and put three buttons to create the bills insted
+        # this removes the need for a bill controller
         if table.has_any_active_orders():
-            self.make_button('Create Bills', 
-                action=lambda event: self.controller.make_one_bill(self.printer_window),
+            #makes the Separate Bills
+            self.make_button('Separate Bills',
+                action=lambda event: self.controller.make_separate_bills(self.printer_window),
                 location=BUTTON_BOTTOM_LEFT)
+            #makes the Split Bills button
+            self.make_button('Split Bills',
+                             action=lambda event: self.controller.make_split_bills(self.printer_window),
+                             location=BUTTON_BOTTOM_LEFT_HIGHER1)
+            #makes the One Bill button
+            self.make_button('One Bill',
+                             action=lambda event: self.controller.make_one_bill(self.printer_window),
+                             location=BUTTON_BOTTOM_LEFT_HIGHER2)
 
     def draw_table(self, table, location=None, scale=1):
         offset_x0, offset_y0 = location if location else table.location

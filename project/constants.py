@@ -1,9 +1,7 @@
 """
 Initialization and other data for the OORMS system.
-
 Submitting lab group: [your names here]
 Submission date: [date here]
-
 Original code by EEE320 instructors.
 """
 
@@ -61,6 +59,8 @@ BUTTON_MARGIN = (10, 10)
 BUTTON_BOTTOM_RIGHT = (SERVER_VIEW_WIDTH - BUTTON_SIZE[0] - BUTTON_MARGIN[0],
                        SERVER_VIEW_HEIGHT - BUTTON_SIZE[1] - BUTTON_MARGIN[1])
 BUTTON_BOTTOM_LEFT = (BUTTON_MARGIN[0], SERVER_VIEW_HEIGHT - BUTTON_SIZE[1] - BUTTON_MARGIN[1])
+BUTTON_BOTTOM_LEFT_HIGHER1 = (BUTTON_MARGIN[0], SERVER_VIEW_HEIGHT - 2*BUTTON_SIZE[1] - 2*BUTTON_MARGIN[1])
+BUTTON_BOTTOM_LEFT_HIGHER2 = (BUTTON_MARGIN[0], SERVER_VIEW_HEIGHT - 3*BUTTON_SIZE[1] - 3*BUTTON_MARGIN[1])
 BUTTON_STYLE = {'fill': '#090', 'outline': '#090'}
 BUTTON_TEXT_STYLE = {'fill': '#fff'}
 
@@ -75,5 +75,3 @@ CANCEL_SIZE = (DOT_SIZE, DOT_SIZE)
 CANCEL_STYLE = {'fill': '#900', 'outline': '#900'}
 NOT_YET_ORDERED_STYLE = {'fill': '#fff', 'outline': '#090'}
 ORDERED_STYLE = BUTTON_STYLE
-
-
