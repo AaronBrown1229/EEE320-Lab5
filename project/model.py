@@ -66,6 +66,45 @@ class Table:
 
         return items, cost
 
+    def separate_bills(self):
+        # stores the working chairs food and cost similar to one_bill
+        items = {}
+        # stores the working chairs total cost
+        total = 0
+
+        # stores the items and total
+        seat = []
+        # stores seats
+        table = [0] * self.n_seats
+
+        # used to print the seat number
+        seat_counter = 0
+        # cycles through each seat at the table
+        for i in self.orders:
+            # if the seat ordered anything
+            if len(i.items) > 0:
+                # creates the dict and the total cost ordered by the seat
+                for j in i.items:
+                    if j.details.name in items:
+                        items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
+                    else:
+                        items[j.details.name] = [j.details.price, 1]
+                    total += j.details.price
+
+                # sets up the return list
+                seat.append(items)
+                seat.append(total)
+                table[seat_counter] = seat
+
+                # clears the variables for next iteration of the loop
+                items = {}
+                total = 0
+                seat = []
+
+            seat_counter += 1
+
+        return table
+
 
 class Order:
 
