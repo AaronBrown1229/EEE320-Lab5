@@ -55,13 +55,13 @@ class TableController(Controller):
         # is now a list of orders that have been orderd
         printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
 
-        one_bill = []
-        (ordered_items, item_cost) = self.table.one_bill()
+        (items, total_cost) = self.table.one_bill()
 
         # print the name and price of each item
-        for i in ordered_items, item_cost:
-            printer.print(f'\t Item: {i} Price: {i} \n')
+        for i in items:
+            printer.print(f'\t {items[i][1]} * {i} : ${items[i][0]} \n')
 
+        printer.print(f'\t Total : ${total_cost} \n')
 
 
     def done(self):

@@ -53,15 +53,18 @@ class Table:
         # make an outer for loop with that list
         # the nested loop will be to cycle through the items orderd by each seat
 
-        item_array = []
-        item_cost = []
+        items = {}
+        cost = 0
 
         for i in self.orders:
             for j in i.items:
-                item_array.append(j.details.name)
-                item_cost.append(j.details.price)
-        return item_array, item_cost
+                if j.details.name in items:
+                    items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
+                else:
+                    items[j.details.name] = [j.details.price, 1]
+                cost += j.details.price
 
+        return items, cost
 class Order:
 
     def __init__(self):
