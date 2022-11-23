@@ -48,14 +48,14 @@ class Table:
         return self.orders[seat]
 
     def one_bill(self):
-
-        # make a list of seats that have orders
-        # make an outer for loop with that list
-        # the nested loop will be to cycle through the items orderd by each seat
-
+        # items is a dict who's keys are food items and the content is a list
+        # in the list the first element is the cost of the item and the second element is the
+        # number of times it was ordered
         items = {}
         cost = 0
 
+        # steps through each seat at the table and fills items with the required info
+        # also calculates the total cost of the bill
         for i in self.orders:
             for j in i.items:
                 if j.details.name in items:
