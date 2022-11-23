@@ -63,6 +63,19 @@ class TableController(Controller):
 
         printer.print(f'\t Total : ${total_cost} \n')
 
+    def make_separate_bills(self, printer):
+        printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
+
+        seat_orders = self.table.separate_bills()
+
+        seat_number_counter = 0
+        for seat in seat_orders:
+            if seat != 0:
+                printer.print(f'\t Seat # {seat_number_counter}')
+                for i in seat[0]:
+                    printer.print(f'\t {seat[0][i][1]} * {i} : ${seat[0][i][0]} \n')
+                printer.print(f'\t Total : ${seat[1]} \n \n')
+
 
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))

@@ -65,6 +65,8 @@ class Table:
                 cost += j.details.price
 
         return items, cost
+
+
 class Order:
 
     def __init__(self):
