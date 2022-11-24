@@ -126,6 +126,10 @@ class Bills:
         self.ledger.append(table)
         return table
 
+    def transfer_bill(self, orders, to, remove):
+        orders[to].items += orders[remove].items
+        orders[remove].items = []
+
 
 class Order:
 

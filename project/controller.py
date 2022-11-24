@@ -106,13 +106,10 @@ class MoveBillController(Controller):
             self.moveTo = seat_number
         else:
             self.moveFrom = seat_number
-            self.moveBill
+            self.bill.transfer_bill(self.table.orders, self.moveTo, self.moveFrom)
             self.view.set_controller(TableController(self.view, self.restaurant, self.bill, self.table))
 
         self.view.update()
-
-    def moveBill(self):
-        pass
 
     def cancel(self):
         self.view.set_controller(TableController(self.view, self.restaurant, self.bill, self.table))
