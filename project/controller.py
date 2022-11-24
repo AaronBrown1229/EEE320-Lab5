@@ -102,7 +102,7 @@ class MoveBillController(Controller):
 
     def seat_touched(self, seat_number):
         self.seat_value[seat_number] = 1
-        if self.moveTo == 0:
+        if self.moveTo == -1:
             self.moveTo = seat_number
         else:
             self.moveFrom = seat_number
