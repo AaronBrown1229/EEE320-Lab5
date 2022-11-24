@@ -18,6 +18,7 @@ class Restaurant:
         self.tables = [Table(seats, loc) for seats, loc in TABLES]
         self.menu_items = [MenuItem(name, price) for name, price in MENU_ITEMS]
         self.views = []
+        self.bill = Bills()
 
     def add_view(self, view):
         self.views.append(view)
@@ -48,8 +49,29 @@ class Table:
     def order_for(self, seat):
         return self.orders[seat]
 
-    def one_bill(self):
-        # items is a dict who's keys are food items and the content is a list
+    def clear_table(self):
+        self.orders = [Order() for _ in range(self.n_seats)]
+
+
+class Bills:
+    # returns a dict of items matched to their price and the total cost
+    def seat_bill(self, seat):
+        # maybe make this return the number of times the item is ordered the price and the total cost
+        # This will let the other methods create the list
+        items = {}
+        cost = 0
+
+        for j in seat.items:
+            if j.details.name in items:
+                items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
+            else:
+                items[j.details.name] = [j.details.price, 1]
+            cost += j.details.price
+
+        return items, cost
+
+    def one_bill(self, orders):
+        # items is a dict whose keys are food items and the content is a list
         # in the list the first element is the cost of the item and the second element is the
         # number of times it was ordered
         items = {}
@@ -57,7 +79,7 @@ class Table:
 
         # steps through each seat at the table and fills items with the required info
         # also calculates the total cost of the bill
-        for i in self.orders:
+        for i in orders:
             for j in i.items:
                 if j.details.name in items:
                     items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
@@ -67,7 +89,7 @@ class Table:
 
         return items, cost
 
-    def separate_bills(self):
+    def separate_bills(self, orders, n_seats):
         # stores the working chairs food and cost similar to one_bill
         items = {}
         # stores the working chairs total cost
@@ -76,38 +98,28 @@ class Table:
         # stores the items and total
         seat = []
         # stores seats
-        table = [0] * self.n_seats
+        table = [0] * n_seats
 
         # used to print the seat number
         seat_counter = 0
         # cycles through each seat at the table
-        for i in self.orders:
+        for i in orders:
             # if the seat ordered anything
             if len(i.items) > 0:
                 # creates the dict and the total cost ordered by the seat
-                for j in i.items:
-                    if j.details.name in items:
-                        items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
-                    else:
-                        items[j.details.name] = [j.details.price, 1]
-                    total += j.details.price
+                (items, total) = self.seat_bill(i)
 
                 # sets up the return list
                 seat.append(items)
                 seat.append(total)
                 table[seat_counter] = seat
 
-                # clears the variables for next iteration of the loop
-                items = {}
-                total = 0
+                # clears for next iteration of the loop
                 seat = []
 
             seat_counter += 1
 
         return table
-
-    def clear_table(self):
-        self.orders = [Order() for _ in range(self.n_seats)]
 
 
 class Order:
