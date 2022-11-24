@@ -53,7 +53,7 @@ class TableController(Controller):
         # is now a list of orders that have been ordered
         printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
 
-        (items, total_cost) = self.bill.one_bill(table.orders)
+        (items, total_cost) = self.bill.one_bill(self.table.orders)
 
         # print the name and price of each item
         for i in items:
@@ -68,7 +68,7 @@ class TableController(Controller):
     def make_separate_bills(self, printer):
         printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
 
-        seat_orders = self.table.separate_bills()
+        seat_orders = self.bill.separate_bills(self.table.orders, self.table.n_seats)
 
         seat_number_counter = 1
         for seat in seat_orders:
