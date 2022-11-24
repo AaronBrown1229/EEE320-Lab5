@@ -54,6 +54,9 @@ class Table:
 
 
 class Bills:
+    def __init__(self):
+        self.ledger = []
+
     # returns a dict of items matched to their price and the total cost
     def seat_bill(self, seat):
         # maybe make this return the number of times the item is ordered the price and the total cost
@@ -87,6 +90,7 @@ class Bills:
                     items[j.details.name] = [j.details.price, 1]
                 cost += j.details.price
 
+        self.ledger.append([items, cost])
         return items, cost
 
     def separate_bills(self, orders, n_seats):
@@ -119,6 +123,7 @@ class Bills:
 
             seat_counter += 1
 
+        self.ledger.append(table)
         return table
 
 
