@@ -105,6 +105,9 @@ class Table:
 
         return table
 
+    def clear_table(self):
+        self.orders = [Order() for _ in range(self.n_seats)]
+
 
 class Order:
 

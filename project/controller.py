@@ -57,6 +57,10 @@ class TableController(Controller):
 
         printer.print(f'\t Total : ${total_cost} \n')
 
+        # clears the table
+        self.table.clear_table()
+        self.view.update()
+
     def make_separate_bills(self, printer):
         printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
 
@@ -70,6 +74,10 @@ class TableController(Controller):
                     printer.print(f'\t {seat[0][i][1]} * {i} : ${seat[0][i][0]} \n')
                 printer.print(f'\t Total : ${seat[1]} \n \n')
             seat_number_counter += 1
+
+        # clears the table
+        self.table.clear_table()
+        self.view.update()
 
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))
