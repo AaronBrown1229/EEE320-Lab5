@@ -39,12 +39,6 @@ class TableController(Controller):
         self.view.set_controller(OrderController(self.view, self.restaurant, self.table, seat_number))
         self.view.update()
 
-    def make_bills(self, printer):
-        # TODO: switch to appropriate controller & UI so server can create and print bills
-        # for this table. The following line illustrates how bill printing works, but the
-        # actual printing should happen in the (new) controller, not here.
-        printer.print(f'Set up bills for table {self.restaurant.tables.index(self.table)}')
-
     def make_one_bill(self, printer):
 
         """
@@ -63,6 +57,10 @@ class TableController(Controller):
 
         printer.print(f'\t Total : ${total_cost} \n')
 
+        # clears the table
+        self.table.clear_table()
+        self.view.update()
+
     def make_separate_bills(self, printer):
         printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
 
@@ -77,6 +75,7 @@ class TableController(Controller):
                 printer.print(f'\t Total : ${seat[1]} \n \n')
             seat_number_counter += 1
 
+<<<<<<< HEAD
 
 
 
@@ -92,6 +91,12 @@ class TableController(Controller):
         self.view.update()
 
 
+=======
+        # clears the table
+        self.table.clear_table()
+        self.view.update()
+
+>>>>>>> 0b6ed904b3cd576b59f63c72908773361e42fb03
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))
         self.view.update()
