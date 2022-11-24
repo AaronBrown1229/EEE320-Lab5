@@ -93,8 +93,8 @@ class MoveBillController(Controller):
         self.table = table
         # will be used to set the colour of the seat
         self.seat_value = [0] * table.n_seats
-        self.moveTo = 0
-        self.moveFrom = 0
+        self.moveTo = -1
+        self.moveFrom = -1
 
     def create_ui(self):
         self.view.create_MoveBill_ui(self.table)

@@ -95,9 +95,19 @@ class ServerView(RestaurantView):
                              location=BUTTON_BOTTOM_LEFT_HIGHER2)
 
     def create_MoveBill_ui(self, table):
-        pass
+        to_mark = [0] * table.n_seats
+        if self.controller.moveTo != -1:
+            to_mark[self.controller.moveTo] = 1
+        self.canvas.delete(tk.ALL)
+        table_id, seat_ids = self.draw_table(table, location=SINGLE_TABLE_LOCATION)
+        for ix, seat_id in enumerate(seat_ids):
+            def handler(_, seat_number=ix):
+                self.controller.seat_touched(seat_number)
 
-    def draw_table(self, table, location=None, scale=1):
+            self.canvas.tag_bind(seat_id, '<Button-1>', handler)
+        self.make_button('Cancel', action=lambda event: self.controller.cancel)
+
+    def draw_table(self, table, location=None, scale=1, toMark = []):
         offset_x0, offset_y0 = location if location else table.location
         seats_per_side = math.ceil(table.n_seats / 2)
         table_height = SEAT_DIAM * seats_per_side + SEAT_SPACING * (seats_per_side - 1)
@@ -113,7 +123,11 @@ class ServerView(RestaurantView):
                        (table.n_seats % 2) * (ix % 2) * (SEAT_DIAM + SEAT_SPACING) / 2)
             seat_bbox = scale_and_offset(seat_x0, seat_y0, SEAT_DIAM, SEAT_DIAM,
                                          offset_x0, offset_y0, scale)
-            style = FULL_SEAT_STYLE if table.has_order_for(ix) else EMPTY_SEAT_STYLE
+            # done to ensure backwards compatibility with functions
+            if not toMark:
+                style = FULL_SEAT_STYLE if table.has_order_for(ix) else EMPTY_SEAT_STYLE
+            else:
+                style = FULL_SEAT_STYLE if toMark[ix] == 1 else EMPTY_SEAT_STYLE
             seat_id = self.canvas.create_oval(*seat_bbox, **style)
             seat_ids.append(seat_id)
         return table_id, seat_ids
