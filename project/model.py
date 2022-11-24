@@ -18,6 +18,7 @@ class Restaurant:
         self.tables = [Table(seats, loc) for seats, loc in TABLES]
         self.menu_items = [MenuItem(name, price) for name, price in MENU_ITEMS]
         self.views = []
+        self.bill = Bills()
 
     def add_view(self, view):
         self.views.append(view)
@@ -66,8 +67,7 @@ class Bills:
 
         return items, cost
 
-
-    def one_bill(self):
+    def one_bill(self, orders):
         # items is a dict who's keys are food items and the content is a list
         # in the list the first element is the cost of the item and the second element is the
         # number of times it was ordered
@@ -76,7 +76,7 @@ class Bills:
 
         # steps through each seat at the table and fills items with the required info
         # also calculates the total cost of the bill
-        for i in self.orders:
+        for i in orders:
             (items, cost) = self.seat_bill(i)
 
         return items, cost
