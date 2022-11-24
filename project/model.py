@@ -47,6 +47,26 @@ class Table:
     def order_for(self, seat):
         return self.orders[seat]
 
+    def clear_table(self):
+        self.orders = [Order() for _ in range(self.n_seats)]
+
+
+class Bills:
+    # returns a dict of items matched to their price and the total cost
+    def seat_bill(self, seat):
+        items = {}
+        cost = 0
+
+        for j in seat.items:
+            if j.details.name in items:
+                items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
+            else:
+                items[j.details.name] = [j.details.price, 1]
+            cost += j.details.price
+
+        return items, cost
+
+
     def one_bill(self):
         # items is a dict who's keys are food items and the content is a list
         # in the list the first element is the cost of the item and the second element is the
@@ -57,12 +77,7 @@ class Table:
         # steps through each seat at the table and fills items with the required info
         # also calculates the total cost of the bill
         for i in self.orders:
-            for j in i.items:
-                if j.details.name in items:
-                    items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
-                else:
-                    items[j.details.name] = [j.details.price, 1]
-                cost += j.details.price
+            (items, cost) = self.seat_bill(i)
 
         return items, cost
 
@@ -84,29 +99,19 @@ class Table:
             # if the seat ordered anything
             if len(i.items) > 0:
                 # creates the dict and the total cost ordered by the seat
-                for j in i.items:
-                    if j.details.name in items:
-                        items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
-                    else:
-                        items[j.details.name] = [j.details.price, 1]
-                    total += j.details.price
+                (items, total) = self.seat_bill(i)
 
                 # sets up the return list
                 seat.append(items)
                 seat.append(total)
                 table[seat_counter] = seat
 
-                # clears the variables for next iteration of the loop
-                items = {}
-                total = 0
+                # clears for next iteration of the loop
                 seat = []
 
             seat_counter += 1
 
         return table
-
-    def clear_table(self):
-        self.orders = [Order() for _ in range(self.n_seats)]
 
 
 class Order:

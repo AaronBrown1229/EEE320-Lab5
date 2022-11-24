@@ -10,12 +10,15 @@ Original code by EEE320 instructors.
 
 class Controller:
 
-    def __init__(self, view, restaurant):
+    def __init__(self, view, restaurant, bill):
         self.view = view
         self.restaurant = restaurant
+        self.bill = bill
 
 
 class RestaurantController(Controller):
+    def __init__(self, view, restaurant, bill = []):
+        super.__init__(view, restaurant, bill)
 
     def create_ui(self):
         self.view.create_restaurant_ui()
@@ -28,8 +31,8 @@ class RestaurantController(Controller):
 
 class TableController(Controller):
 
-    def __init__(self, view, restaurant, table):
-        super().__init__(view, restaurant)
+    def __init__(self, view, restaurant, bill, table):
+        super().__init__(view, restaurant, bill)
         self.table = table
 
     def create_ui(self):
@@ -86,8 +89,8 @@ class TableController(Controller):
 
 class OrderController(Controller):
 
-    def __init__(self, view, restaurant, table, seat_number):
-        super().__init__(view, restaurant)
+    def __init__(self, view, restaurant, bill, table, seat_number):
+        super().__init__(view, restaurant, bill)
         self.table = table
         self.order = self.table.order_for(seat_number)
 
