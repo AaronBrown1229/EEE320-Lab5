@@ -79,8 +79,9 @@ class TableController(Controller):
                 printer.print(f'\t Total : ${seat[1]} \n \n')
             seat_number_counter += 1
 
-    def make_split_bills(self, printer):
-        pass
+    def combine_bills(self):
+        self.view.set_controller(MoveBillController(self.view, self.restaurant, self.bill, self.table))
+        self.view.update()
 
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))
