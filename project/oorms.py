@@ -99,7 +99,7 @@ class ServerView(RestaurantView):
         if self.controller.moveTo != -1:
             to_mark[self.controller.moveTo] = 1
         self.canvas.delete(tk.ALL)
-        table_id, seat_ids = self.draw_table(table, location=SINGLE_TABLE_LOCATION)
+        table_id, seat_ids = self.draw_table(table, location=SINGLE_TABLE_LOCATION, to_mark=to_mark)
         for ix, seat_id in enumerate(seat_ids):
             def handler(_, seat_number=ix):
                 self.controller.seat_touched(seat_number)
@@ -107,7 +107,7 @@ class ServerView(RestaurantView):
             self.canvas.tag_bind(seat_id, '<Button-1>', handler)
         self.make_button('Cancel', action=lambda event: self.controller.cancel)
 
-    def draw_table(self, table, location=None, scale=1, toMark = []):
+    def draw_table(self, table, location=None, scale=1, to_mark=[]):
         offset_x0, offset_y0 = location if location else table.location
         seats_per_side = math.ceil(table.n_seats / 2)
         table_height = SEAT_DIAM * seats_per_side + SEAT_SPACING * (seats_per_side - 1)
@@ -124,10 +124,10 @@ class ServerView(RestaurantView):
             seat_bbox = scale_and_offset(seat_x0, seat_y0, SEAT_DIAM, SEAT_DIAM,
                                          offset_x0, offset_y0, scale)
             # done to ensure backwards compatibility with functions
-            if not toMark:
+            if not to_mark:
                 style = FULL_SEAT_STYLE if table.has_order_for(ix) else EMPTY_SEAT_STYLE
             else:
-                style = FULL_SEAT_STYLE if toMark[ix] == 1 else EMPTY_SEAT_STYLE
+                style = FULL_SEAT_STYLE if to_mark[ix] == 1 else EMPTY_SEAT_STYLE
             seat_id = self.canvas.create_oval(*seat_bbox, **style)
             seat_ids.append(seat_id)
         return table_id, seat_ids
