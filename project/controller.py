@@ -87,6 +87,37 @@ class TableController(Controller):
         self.view.update()
 
 
+class MoveBillController(Controller):
+    def __init__(self, view, restaurant, bill, table):
+        super().__init__(view, restaurant, bill)
+        self.table = table
+        # will be used to set the colour of the seat
+        self.seat_value = [0] * table.n_seats
+        self.moveTo = 0
+        self.moveFrom = 0
+
+    def create_ui(self):
+        self.view.create_MoveBill_ui(self.table)
+
+    def seat_touched(self, seat_number):
+        self.seat_value[seat_number] = 1
+        if self.moveTo == 0:
+            self.moveTo = seat_number
+        else:
+            self.moveFrom = seat_number
+            self.moveBill
+            self.view.set_controller(TableController(self.view, self.restaurant, self.bill, self.table))
+
+        self.view.update()
+
+    def moveBill(self):
+        pass
+
+    def cancel(self):
+        self.view.set_controller(TableController(self.view, self.restaurant, self.bill, self.table))
+        self.view.update()
+
+
 class OrderController(Controller):
 
     def __init__(self, view, restaurant, bill, table, seat_number):

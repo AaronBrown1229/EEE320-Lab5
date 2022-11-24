@@ -94,6 +94,9 @@ class ServerView(RestaurantView):
                              action=lambda event: self.controller.make_one_bill(self.printer_window),
                              location=BUTTON_BOTTOM_LEFT_HIGHER2)
 
+    def create_MoveBill_ui(self, table):
+        pass
+
     def draw_table(self, table, location=None, scale=1):
         offset_x0, offset_y0 = location if location else table.location
         seats_per_side = math.ceil(table.n_seats / 2)
