@@ -77,6 +77,21 @@ class TableController(Controller):
                 printer.print(f'\t Total : ${seat[1]} \n \n')
             seat_number_counter += 1
 
+
+
+
+    # same as one bill but div by number of seats that ordered
+    def make_split_bills(self, printer):
+        (num_ordered, total_price) = self.table.split_bills()
+
+        div_price = total_price/num_ordered
+
+        printer.print(f'\t Number of orders : {num_ordered} \n Price per person : ${div_price}')
+
+        self.table.clear_table()
+        self.view.update()
+
+
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))
         self.view.update()

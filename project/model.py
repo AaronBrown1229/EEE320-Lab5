@@ -44,6 +44,7 @@ class Table:
     def has_order_for(self, seat):
         return bool(self.orders[seat].items)
 
+
     def order_for(self, seat):
         return self.orders[seat]
 
@@ -65,6 +66,24 @@ class Table:
                 cost += j.details.price
 
         return items, cost
+
+    def split_bills(self):
+
+        item_num = 0
+        price = 0
+
+        # stores number of seats that made orders
+        for i in self.orders:
+            if len(i.items) > 0:
+                item_num += 1
+                for j in i.items:
+                    price += j.details.price
+
+
+        # return sum((item.details.price for item in self.items))
+
+        #returns the number of orders and the # of orders over the total price
+        return item_num, price
 
     def separate_bills(self):
         # stores the working chairs food and cost similar to one_bill
