@@ -39,12 +39,6 @@ class TableController(Controller):
         self.view.set_controller(OrderController(self.view, self.restaurant, self.table, seat_number))
         self.view.update()
 
-    def make_bills(self, printer):
-        # TODO: switch to appropriate controller & UI so server can create and print bills
-        # for this table. The following line illustrates how bill printing works, but the
-        # actual printing should happen in the (new) controller, not here.
-        printer.print(f'Set up bills for table {self.restaurant.tables.index(self.table)}')
-
     def make_one_bill(self, printer):
 
         """
