@@ -55,6 +55,8 @@ class Table:
 class Bills:
     # returns a dict of items matched to their price and the total cost
     def seat_bill(self, seat):
+        # maybe make this return the number of times the item is ordered the price and the total cost
+        # This will let the other methods create the list
         items = {}
         cost = 0
 
@@ -68,7 +70,7 @@ class Bills:
         return items, cost
 
     def one_bill(self, orders):
-        # items is a dict who's keys are food items and the content is a list
+        # items is a dict whose keys are food items and the content is a list
         # in the list the first element is the cost of the item and the second element is the
         # number of times it was ordered
         items = {}
@@ -77,7 +79,12 @@ class Bills:
         # steps through each seat at the table and fills items with the required info
         # also calculates the total cost of the bill
         for i in orders:
-            (items, cost) = self.seat_bill(i)
+            for j in i.items:
+                if j.details.name in items:
+                    items[j.details.name] = [j.details.price, items[j.details.name][1] + 1]
+                else:
+                    items[j.details.name] = [j.details.price, 1]
+                cost += j.details.price
 
         return items, cost
 
