@@ -105,7 +105,7 @@ class ServerView(RestaurantView):
                 self.controller.seat_touched(seat_number)
 
             self.canvas.tag_bind(seat_id, '<Button-1>', handler)
-        self.make_button('Cancel', action=lambda event: self.controller.cancel)
+        self.make_button('Cancel', action=lambda event: self.controller.cancel())
 
     def draw_table(self, table, location=None, scale=1, to_mark=[]):
         offset_x0, offset_y0 = location if location else table.location
