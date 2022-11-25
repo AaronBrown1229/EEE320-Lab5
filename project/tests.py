@@ -172,13 +172,53 @@ class OORMSTestCase(unittest.TestCase):
         self.view.controller.update_order()
         self.assertEqual(1, len(the_order5.items))
 
-        self
-        # check that all elements of items are correct, and the total is good
+        # mark all as served
+        self.view.controller.serve()
+
+        # gets list of items ordered and val of total cost from one_bill
+
+        (items, total) = self.view.controller.bill.one_bill(self.view.controller.table.orders)
+
+        #make dic of real_items and int of real_total cost and compare real to meathods
+        real_items = {}
+        real_total = 0
+        for i in self.view.controller.table.orders:
+            for j in i.items:
+                if j.details.name in real_items:
+                    real_items[j.details.name] = [j.details.price, real_items[j.details.name][1] + 1]
+                else:
+                    real_items[j.details.name] = [j.details.price, 1]
+                real_total += j.details.price
+
+        self.assertEqual(items,real_items)
+        self.assertEqual(total, real_total)
 
 
-    #
-    # def test_make_separate_bills(self):
-    #
+    def test_make_separate_bills(self):
+        # make an order
+        self.view.controller.table_touched(0)
+        self.view.controller.seat_touched(3)
+        the_order3 = self.restaurant.tables[0].order_for(3)
+        self.view.controller.add_item(self.restaurant.menu_items[0])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order3.items))
+
+        self.view.controller.seat_touched(4)
+        the_order4 = self.restaurant.tables[0].order_for(4)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order4.items))
+
+        self.view.controller.seat_touched(5)
+        the_order5 = self.restaurant.tables[0].order_for(5)
+        self.view.controller.add_item(self.restaurant.menu_items[5])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order5.items))
+
+        # mark all as served
+        self.view.controller.serve()
+
+        
     # def test_combine_bills(self):
     #
     # def test_bill_before_all_served(self):

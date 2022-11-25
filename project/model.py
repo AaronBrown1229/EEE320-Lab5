@@ -63,7 +63,7 @@ class Table:
         return bool(self.orders[seat].items)
 
     def order_for(self, seat):
-        return self.orders[]
+        return self.orders[seat]
 
     def clear_table(self):
         self.orders = [Order() for _ in range(self.n_seats)]
