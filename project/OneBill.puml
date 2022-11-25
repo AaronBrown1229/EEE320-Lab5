@@ -1,0 +1,53 @@
+@startuml
+header page Header
+title One Bill Sequence Diagram
+
+actor server
+
+server -> "view : ServerView": Press one_bill button
+activate "view : ServerView"
+
+"view : ServerView" -> "controller : TableController": make_one_bill()
+activate "controller : TableController"
+
+"controller : TableController" -> "printer : Printer": print(Table # : int)
+
+"controller : TableController" -> "bill : Bills": one_bill(orders : list)
+activate "bill : Bills"
+
+"bill : Bills" -> "ledger : list": append([item, cost])
+"bill : Bills" -> "controller : TableController": items : dict, cost : int
+
+deactivate "bill : Bills"
+
+loop items
+    "controller : TableController" -> "printer : Printer": print(#of orders : int, item : str)
+end
+
+"controller : TableController" -> "printer : Printer": print(Total : int)
+
+"controller : TableController" -> "table : table": clear_table()
+
+"controller : TableController" -> "view : ServerView": update()
+deactivate "controller : TableController"
+
+"view : ServerView" -> "controller : TableController": create_ui()
+activate "controller : TableController"
+"controller : TableController" -> "view : ServerView": create_table_ui(table : Table)
+deactivate "controller : TableController"
+
+
+deactivate "view : ServerView"
+
+'actor server
+'activate server
+'
+'
+'Alice -> Bob: Authentication Request
+'Bob --> Alice: Authentication Response
+'deactivate server
+'
+'Alice -> Bob: Another authentication Request
+'Alice -> Stan ** : test
+'Alice <-- Bob: another authentication Response
+@enduml
