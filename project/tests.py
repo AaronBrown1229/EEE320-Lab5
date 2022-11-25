@@ -149,3 +149,37 @@ class OORMSTestCase(unittest.TestCase):
         check_first_three_items(self.restaurant.menu_items, the_order.items)
         self.assertEqual(self.restaurant.menu_items[1], the_order.items[3].details)
         self.assertEqual(self.restaurant.menu_items[2], the_order.items[4].details)
+
+
+    def test_make_one_bill(self):
+        # make an order
+        self.view.controller.table_touched(0)
+        self.view.controller.seat_touched(3)
+        the_order3 = self.restaurant.tables[0].order_for(3)
+        self.view.controller.add_item(self.restaurant.menu_items[0])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order3.items))
+
+        self.view.controller.seat_touched(4)
+        the_order4 = self.restaurant.tables[0].order_for(4)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order4.items))
+
+        self.view.controller.seat_touched(5)
+        the_order5 = self.restaurant.tables[0].order_for(5)
+        self.view.controller.add_item(self.restaurant.menu_items[5])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order5.items))
+
+        self
+        # check that all elements of items are correct, and the total is good
+
+
+    #
+    # def test_make_separate_bills(self):
+    #
+    # def test_combine_bills(self):
+    #
+    # def test_bill_before_all_served(self):
+    #

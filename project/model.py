@@ -47,7 +47,7 @@ class Table:
 
 
     def order_for(self, seat):
-        return self.orders[seat]
+        return self.orders[]
 
     def clear_table(self):
         self.orders = [Order() for _ in range(self.n_seats)]
