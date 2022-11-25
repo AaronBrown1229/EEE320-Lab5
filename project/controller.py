@@ -51,7 +51,7 @@ class TableController(Controller):
         """
 
         # is now a list of orders that have been ordered
-        printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
+        printer.print(f'Table # {self.restaurant.tables.index(self.table) + 1}')
 
         (items, total_cost) = self.bill.one_bill(self.table.orders)
 
@@ -66,7 +66,7 @@ class TableController(Controller):
         self.view.update()
 
     def make_separate_bills(self, printer):
-        printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
+        printer.print(f'Table # {self.restaurant.tables.index(self.table) + 1}')
 
         seat_orders = self.bill.separate_bills(self.table.orders, self.table.n_seats)
 
