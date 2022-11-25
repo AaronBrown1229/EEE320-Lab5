@@ -154,6 +154,40 @@ class OORMSTestCase(unittest.TestCase):
         self.assertEqual(self.restaurant.menu_items[1], the_order.items[3].details)
         self.assertEqual(self.restaurant.menu_items[2], the_order.items[4].details)
 
+    def test_bill_before_all_served(self):
+        # make an order
+        self.view.controller.table_touched(6)
+
+        self.view.controller.seat_touched(0)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.add_item(self.restaurant.menu_items[6])
+        the_order0 = self.view.controller.table.orders[0].items
+        self.view.controller.update_order()
+        self.assertEqual(2, len(the_order0))
+
+        self.view.controller.seat_touched(1)
+        the_order1 = self.view.controller.table.orders[1].items
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order1))
+
+        self.view.controller.seat_touched(5)
+        the_order5 = self.view.controller.table.orders[5].items
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order5))
+
+
+        # mark as served
+        self.view.controller.serve()
+
+        # ensure the state of all items ordered are now served
+        for i in self.view.controller.table.orders:
+            for j in i.items:
+                # j is item *inst of orderItem
+                #check that each ordered item state is either 0 or 2
+                self.assertEqual(j.ordered, 0 or 2)
+
 
     def test_make_one_bill(self):
         # make an order
@@ -291,5 +325,3 @@ class OORMSTestCase(unittest.TestCase):
         # compare the two
         self.assertEqual(table, real_table)
 
-    # def test_bill_before_all_served(self):
-    #
