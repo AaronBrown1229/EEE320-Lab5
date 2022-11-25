@@ -179,16 +179,9 @@ class OORMSTestCase(unittest.TestCase):
 
         (items, total) = self.view.controller.bill.one_bill(self.view.controller.table.orders)
 
-        #make dic of real_items and int of real_total cost and compare real to meathods
-        real_items = {}
-        real_total = 0
-        for i in self.view.controller.table.orders:
-            for j in i.items:
-                if j.details.name in real_items:
-                    real_items[j.details.name] = [j.details.price, real_items[j.details.name][1] + 1]
-                else:
-                    real_items[j.details.name] = [j.details.price, 1]
-                real_total += j.details.price
+        # make dic of real_items and int of real_total cost and compare real to meathods
+        real_items = {'House burger': [16, 1],'Fried Chicken' : [14.5, 1], 'Roasted Squash': [14, 1]}
+        real_total = 44.5
 
         self.assertEqual(items,real_items)
         self.assertEqual(total, real_total)
@@ -218,8 +211,21 @@ class OORMSTestCase(unittest.TestCase):
         # mark all as served
         self.view.controller.serve()
 
+
+        # get dictionary from separate_bills
+        table = {}
+        table = self.view.controller.bill.separate_bills(self.view.controller.table.orders,self.view.controller.table.n_seats)
+
+        # make dictionary that contains all the values expected
+        real_table = [0, 0, 0, [{'House burger': [16, 1]}, 16],[{'Fried Chicken' : [14.5, 1]}, 14.5],[{'Roasted Squash': [14, 1]}, 14]]
+
+        # compare the two
+        self.assertEqual(table, real_table)
+
+    def test_combine_bills(self):
         
-    # def test_combine_bills(self):
-    #
+
+
+
     # def test_bill_before_all_served(self):
     #
