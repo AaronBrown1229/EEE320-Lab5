@@ -84,7 +84,8 @@ class TableController(Controller):
         self.view.update()
 
     def serve(self):
-        pass
+        self.table.mark_all_served()
+        self.view.update()
 
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))

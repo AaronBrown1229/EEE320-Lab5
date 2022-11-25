@@ -52,6 +52,12 @@ class Table:
             return all_served
         return False
 
+    def mark_all_served(self):
+        if self.has_any_active_orders():
+            for order in self.orders:
+                for item in order.items:
+                    item.mark_as_served()
+
     def has_order_for(self, seat):
         return bool(self.orders[seat].items)
 
@@ -168,8 +174,6 @@ class Order:
 
 
 class OrderItem:
-
-    # TODO: need to represent item state, not just 'ordered', all methods will need modifying
     def __init__(self, menu_item):
         self.details = menu_item
         # unordered is 0
@@ -186,7 +190,9 @@ class OrderItem:
         return False
 
     def mark_as_served(self):
-        self.ordered = 2
+        # an item must first be ordered before it can be served
+        if self.ordered == 1:
+            self.ordered = 2
 
     def has_been_served(self):
         if self.ordered == 2:
