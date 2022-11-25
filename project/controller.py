@@ -79,6 +79,10 @@ class TableController(Controller):
                 printer.print(f'\t Total : ${seat[1]} \n \n')
             seat_number_counter += 1
 
+        #clears the table
+        self.table.clear_table()
+        self.view.update()
+
     def combine_bills(self):
         self.view.set_controller(MoveBillController(self.view, self.restaurant, self.bill, self.table))
         self.view.update()
