@@ -149,3 +149,83 @@ class OORMSTestCase(unittest.TestCase):
         check_first_three_items(self.restaurant.menu_items, the_order.items)
         self.assertEqual(self.restaurant.menu_items[1], the_order.items[3].details)
         self.assertEqual(self.restaurant.menu_items[2], the_order.items[4].details)
+
+
+    def test_make_one_bill(self):
+        # make an order
+        self.view.controller.table_touched(0)
+        self.view.controller.seat_touched(3)
+        the_order3 = self.restaurant.tables[0].order_for(3)
+        self.view.controller.add_item(self.restaurant.menu_items[0])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order3.items))
+
+        self.view.controller.seat_touched(4)
+        the_order4 = self.restaurant.tables[0].order_for(4)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order4.items))
+
+        self.view.controller.seat_touched(5)
+        the_order5 = self.restaurant.tables[0].order_for(5)
+        self.view.controller.add_item(self.restaurant.menu_items[5])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order5.items))
+
+        # mark all as served
+        self.view.controller.serve()
+
+        # gets list of items ordered and val of total cost from one_bill
+
+        (items, total) = self.view.controller.bill.one_bill(self.view.controller.table.orders)
+
+        # make dic of real_items and int of real_total cost and compare real to meathods
+        real_items = {'House burger': [16, 1],'Fried Chicken' : [14.5, 1], 'Roasted Squash': [14, 1]}
+        real_total = 44.5
+
+        self.assertEqual(items,real_items)
+        self.assertEqual(total, real_total)
+
+
+    def test_make_separate_bills(self):
+        # make an order
+        self.view.controller.table_touched(0)
+        self.view.controller.seat_touched(3)
+        the_order3 = self.restaurant.tables[0].order_for(3)
+        self.view.controller.add_item(self.restaurant.menu_items[0])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order3.items))
+
+        self.view.controller.seat_touched(4)
+        the_order4 = self.restaurant.tables[0].order_for(4)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order4.items))
+
+        self.view.controller.seat_touched(5)
+        the_order5 = self.restaurant.tables[0].order_for(5)
+        self.view.controller.add_item(self.restaurant.menu_items[5])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order5.items))
+
+        # mark all as served
+        self.view.controller.serve()
+
+
+        # get dictionary from separate_bills
+        table = {}
+        table = self.view.controller.bill.separate_bills(self.view.controller.table.orders,self.view.controller.table.n_seats)
+
+        # make dictionary that contains all the values expected
+        real_table = [0, 0, 0, [{'House burger': [16, 1]}, 16],[{'Fried Chicken' : [14.5, 1]}, 14.5],[{'Roasted Squash': [14, 1]}, 14]]
+
+        # compare the two
+        self.assertEqual(table, real_table)
+
+    def test_combine_bills(self):
+        
+
+
+
+    # def test_bill_before_all_served(self):
+    #
