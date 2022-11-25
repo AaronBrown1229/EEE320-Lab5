@@ -38,13 +38,29 @@ class Table:
     def has_any_active_orders(self):
         for order in self.orders:
             for item in order.items:
-                if item.has_been_ordered() and not item.has_been_served():
+                if item.has_been_ordered():
                     return True
         return False
 
+    def served(self):
+        if not self.has_any_active_orders():
+            all_served = False
+            for order in self.orders:
+                for item in order.items:
+                    if item.has_been_ordered:
+                        if item.has_been_served():
+                            all_served = True
+            return all_served
+        return False
+
+    def mark_all_served(self):
+        if self.has_any_active_orders():
+            for order in self.orders:
+                for item in order.items:
+                    item.mark_as_served()
+
     def has_order_for(self, seat):
         return bool(self.orders[seat].items)
-
 
     def order_for(self, seat):
         return self.orders[]
@@ -159,25 +175,35 @@ class Order:
 
 
 class OrderItem:
-
-    # TODO: need to represent item state, not just 'ordered', all methods will need modifying
     def __init__(self, menu_item):
         self.details = menu_item
-        self.ordered = False
+        # unordered is 0
+        # ordered is 1
+        # served is 2
+        self.ordered = 0
 
     def mark_as_ordered(self):
-        self.ordered = True
+        self.ordered = 1
 
     def has_been_ordered(self):
-        return self.ordered
+        if self.ordered == 1:
+            return True
+        return False
+
+    def mark_as_served(self):
+        # an item must first be ordered before it can be served
+        if self.ordered == 1:
+            self.ordered = 2
 
     def has_been_served(self):
-        # TODO: correct implementation based on item state
+        if self.ordered == 2:
+            return True
         return False
 
     def can_be_cancelled(self):
-        # TODO: correct implementation based on item state
-        return True
+        if self.ordered <= 1:
+            return True
+        return False
 
 
 class MenuItem:

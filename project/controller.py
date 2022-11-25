@@ -83,6 +83,10 @@ class TableController(Controller):
         self.view.set_controller(MoveBillController(self.view, self.restaurant, self.bill, self.table))
         self.view.update()
 
+    def serve(self):
+        self.table.mark_all_served()
+        self.view.update()
+
     def done(self):
         self.view.set_controller(RestaurantController(self.view, self.restaurant))
         self.view.update()
