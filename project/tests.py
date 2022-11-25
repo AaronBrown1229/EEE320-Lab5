@@ -154,7 +154,6 @@ class OORMSTestCase(unittest.TestCase):
         self.assertEqual(self.restaurant.menu_items[1], the_order.items[3].details)
         self.assertEqual(self.restaurant.menu_items[2], the_order.items[4].details)
 
-
     def test_make_one_bill(self):
         # make an order
         self.view.controller.table_touched(0)
@@ -190,7 +189,6 @@ class OORMSTestCase(unittest.TestCase):
         self.assertEqual(items,real_items)
         self.assertEqual(total, real_total)
 
-
     def test_make_separate_bills(self):
         # make an order
         self.view.controller.table_touched(0)
@@ -214,7 +212,6 @@ class OORMSTestCase(unittest.TestCase):
 
         # mark all as served
         self.view.controller.serve()
-
 
         # get dictionary from separate_bills
         table = self.view.controller.bill.separate_bills(self.view.controller.table.orders,

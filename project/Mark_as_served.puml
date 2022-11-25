@@ -1,0 +1,33 @@
+@startuml
+title Marking as served
+
+actor server
+server -> "view : ServerView": press Items Served button
+activate "view : ServerView"
+
+"view : ServerView" -> "controller : TableController": serve()
+activate "controller : TableController"
+
+"controller : TableController" -> "table : Table": mark_all_served()
+activate "table : Table"
+
+"table : Table" -> "table : Table": temp = has_any_active_orders()
+alt temp
+loop len(self.orders)
+loop len(self.orders[].items)
+"table : Table" -> "item : Orderitem": mark_as_served()
+end
+end
+end
+deactivate "table : Table"
+
+"controller : TableController" -> "view : ServerView": update()
+deactivate "controller : TableController"
+
+"view : ServerView" -> "controller : TableController"
+activate "controller : TableController"
+"controller : TableController" -> "view : ServerView":create_table_ui(self.table)
+deactivate "controller : TableController"
+
+deactivate "view : ServerView"
+@enduml
