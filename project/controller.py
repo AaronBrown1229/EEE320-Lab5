@@ -51,7 +51,7 @@ class TableController(Controller):
         """
 
         # is now a list of orders that have been ordered
-        printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
+        printer.print(f'Table # {self.restaurant.tables.index(self.table) + 1}')
 
         (items, total_cost) = self.bill.one_bill(self.table.orders)
 
@@ -66,7 +66,7 @@ class TableController(Controller):
         self.view.update()
 
     def make_separate_bills(self, printer):
-        printer.print(f'Table # {self.restaurant.tables.index(self.table)}')
+        printer.print(f'Table # {self.restaurant.tables.index(self.table) + 1}')
 
         seat_orders = self.bill.separate_bills(self.table.orders, self.table.n_seats)
 
@@ -78,6 +78,10 @@ class TableController(Controller):
                     printer.print(f'\t {seat[0][i][1]} * {i} : ${seat[0][i][0]} \n')
                 printer.print(f'\t Total : ${seat[1]} \n \n')
             seat_number_counter += 1
+
+        #clears the table
+        self.table.clear_table()
+        self.view.update()
 
     def combine_bills(self):
         self.view.set_controller(MoveBillController(self.view, self.restaurant, self.bill, self.table))
@@ -96,8 +100,6 @@ class MoveBillController(Controller):
     def __init__(self, view, restaurant, bill, table):
         super().__init__(view, restaurant, bill)
         self.table = table
-        # will be used to set the colour of the seat
-        self.seat_value = [0] * table.n_seats
         self.moveTo = -1
         self.moveFrom = -1
 
@@ -105,7 +107,6 @@ class MoveBillController(Controller):
         self.view.create_MoveBill_ui(self.table)
 
     def seat_touched(self, seat_number):
-        self.seat_value[seat_number] = 1
         if self.moveTo == -1:
             self.moveTo = seat_number
         else:

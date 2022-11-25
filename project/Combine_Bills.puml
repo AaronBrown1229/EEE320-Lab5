@@ -1,0 +1,47 @@
+@startuml
+title Combine Bills Sequence Diagram
+
+actor server
+server -> "view : ServerView": Press Combine_Bills button
+activate "view : ServerView"
+
+"view : ServerView" -> "controller : TableController": combine_bills()
+activate "controller : TableController"
+
+"controller : TableController" --> "controller : MoveBillController" **: self.view : ServerView, self.restaurant : Restaurant \n, self.bill : Bills, self.table : Table
+"controller : TableController" -> "view : ServerView": set_controller(controller : MoveBillController)
+"controller : TableController" -> "view : ServerView": update()
+deactivate "controller : TableController"
+
+"view : ServerView" -> "controller : MoveBillController": create_ui()
+activate "controller : MoveBillController"
+"controller : MoveBillController" -> "view : ServerView": create_MoveBill_ui(self.table : Table)
+deactivate "controller : MoveBillController"
+
+server -> "view : ServerView": touch a seat
+"view : ServerView" -> "controller : MoveBillController": seat_touched(seat_number : int)
+activate "controller : MoveBillController"
+"controller : MoveBillController" -> "view : ServerView": update()
+"view : ServerView" -> "controller : MoveBillController": create_ui()
+"controller : MoveBillController" -> "view : ServerView": create_MoveBill_ui(self.table : Table)
+deactivate "controller : MoveBillController"
+
+
+server -> "view : ServerView": touch a seat
+"view : ServerView" -> "controller : MoveBillController": seat_touched(seat_number : int)
+activate "controller : MoveBillController"
+
+"controller : MoveBillController" -> "bill : Bills": transfer_bill(self.table.orders : list, \n self.moveTo : int, self.moveFrom : int)
+"controller : MoveBillController" --> "controller : TableController" : self.view : ServerView, self.restaurant : Restaurant, \n self.bill : Bills, self.table : Table
+"controller : MoveBillController" -> "view : ServerView": set_controller(controller : TableController)
+
+
+"controller : MoveBillController" -> "view : ServerView": update()
+deactivate "controller : MoveBillController"
+
+"view : ServerView" -> "controller : TableController": create_ui()
+activate "controller : TableController"
+"controller : TableController" -> "view : ServerView": create_table_ui(self.table : Table)
+deactivate "controller : TableController"
+
+@enduml

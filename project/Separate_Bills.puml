@@ -1,0 +1,37 @@
+@startuml
+title Separate_Bills Sequence Diagram
+actor server
+server -> "view : ServerView": Presses Separate_Bills button
+activate "view : ServerView"
+
+"view : ServerView" -> "controller : TableController": make_separate_bills(self.printer_window)
+activate "controller : TableController"
+
+"controller : TableController" -> "printer : Printer": print(Table # : int)
+
+"controller : TableController" -> "bill : Bills": separate_bills(orders : list, n_seats : int)
+activate "bill : Bills"
+"bill : Bills" -> "ledger : list": append(table : list)
+"bill : Bills" -> "controller : TableController": seat_orders : list
+deactivate "bill : Bills"
+
+loop seat_orders
+alt seat_orders[].seat != 0
+"controller : TableController" -> "printer : Printer": print("Seat $" : str)
+loop seat_orders[].seat[0]
+"controller : TableController" -> "printer : Printer": print(#of orders : int, item :str, item prince : int)
+end
+"controller : TableController" -> "printer : Printer": print(Total $" : str)
+end
+end
+
+"controller : TableController" -> "table : table": clear_table()
+
+"controller : TableController" -> "view : ServerView": update()
+deactivate "controller : TableController"
+
+"view : ServerView" -> "controller : TableController": create_ui()
+activate "controller : TableController"
+"controller : TableController" -> "view : ServerView": create_table_ui(table : Table)
+deactivate "controller : TableController"
+@enduml
