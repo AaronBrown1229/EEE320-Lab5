@@ -80,19 +80,23 @@ class ServerView(RestaurantView):
         self.make_button('Done', action=lambda event: self.controller.done())
         # removed the Create Bills button and put three buttons to create the bills insted
         # this removes the need for a bill controller
-        if table.has_any_active_orders():
+        if table.served():
             # makes the Split Bills button
             self.make_button('Combine Bills',
                              action=lambda event: self.controller.combine_bills(),
                              location=BUTTON_BOTTOM_LEFT)
-            #makes the Separate Bills
+            # makes the Separate Bills
             self.make_button('Separate Bills',
                 action=lambda event: self.controller.make_separate_bills(self.printer_window),
                 location=BUTTON_BOTTOM_LEFT_HIGHER1)
-            #makes the One Bill button
+            # makes the One Bill button
             self.make_button('One Bill',
                              action=lambda event: self.controller.make_one_bill(self.printer_window),
                              location=BUTTON_BOTTOM_LEFT_HIGHER2)
+        elif table.has_any_active_orders():
+            self.make_button('Items Served',
+                             action=lambda event: self.controller.serve(),
+                             location=BUTTON_BOTTOM_LEFT)
 
     def create_MoveBill_ui(self, table):
         to_mark = [0] * table.n_seats
