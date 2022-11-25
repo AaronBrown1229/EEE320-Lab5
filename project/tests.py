@@ -17,6 +17,7 @@ class UI(Enum):
     restaurant = auto()
     table = auto()
     order = auto()
+    MoveBill = auto()
 
 
 class ServerViewMock:
@@ -40,6 +41,9 @@ class ServerViewMock:
 
     def create_order_ui(self, order):
         self.last_UI_created = (UI.order, order)
+
+    def create_MoveBill_ui(self, table):
+        self.last_UI_created = (UI.MoveBill, table)
 
     def update(self):
         self.controller.create_ui()
@@ -213,18 +217,51 @@ class OORMSTestCase(unittest.TestCase):
 
 
         # get dictionary from separate_bills
-        table = {}
-        table = self.view.controller.bill.separate_bills(self.view.controller.table.orders,self.view.controller.table.n_seats)
+        table = self.view.controller.bill.separate_bills(self.view.controller.table.orders,
+                                                         self.view.controller.table.n_seats)
 
         # make dictionary that contains all the values expected
-        real_table = [0, 0, 0, [{'House burger': [16, 1]}, 16],[{'Fried Chicken' : [14.5, 1]}, 14.5],[{'Roasted Squash': [14, 1]}, 14]]
+        real_table = [0, 0, 0, [{'House burger': [16, 1]}, 16], [{'Fried Chicken' : [14.5, 1]}, 14.5],
+                      [{'Roasted Squash': [14, 1]}, 14]]
 
         # compare the two
         self.assertEqual(table, real_table)
 
-    def test_combine_bills(self):
-        
+    def test_combine_bills1(self):
+        self.view.controller.table_touched(0)
+        self.view.controller.seat_touched(3)
+        the_order3 = self.restaurant.tables[0].order_for(3)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.add_item(self.restaurant.menu_items[6])
+        self.view.controller.update_order()
+        self.assertEqual(2, len(the_order3.items))
 
+        self.view.controller.seat_touched(1)
+        the_order1 = self.restaurant.tables[0].order_for(1)
+        self.view.controller.add_item(self.restaurant.menu_items[3])
+        self.view.controller.update_order()
+        self.assertEqual(1, len(the_order1.items))
+
+        self.view.controller.seat_touched(5)
+        the_order5 = self.restaurant.tables[0].order_for(5)
+        self.view.controller.update_order()
+        self.assertEqual(0, len(the_order5.items))
+
+        self.view.controller.serve()
+
+        self.view.controller.combine_bills()
+
+        self.view.controller.seat_touched(3)
+        self.view.controller.seat_touched(1)
+
+        table = self.view.controller.bill.separate_bills(self.view.controller.table.orders,
+                                                         self.view.controller.table.n_seats)
+        real_table = [0, 0, 0, [{'Fried Chicken': [14.5, 2], 'Portabella Burger': [14, 1]}, 43.0], 0, 0]
+
+
+
+        # compare the two
+        self.assertEqual(table, real_table)
 
 
     # def test_bill_before_all_served(self):
