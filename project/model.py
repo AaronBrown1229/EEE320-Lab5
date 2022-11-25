@@ -43,12 +43,13 @@ class Table:
         return False
 
     def served(self):
-        if self.has_any_active_orders():
-            all_served = True
+        if not self.has_any_active_orders():
+            all_served = False
             for order in self.orders:
                 for item in order.items:
-                    if not item.has_been_served():
-                        all_served = False
+                    if item.has_been_ordered:
+                        if item.has_been_served():
+                            all_served = True
             return all_served
         return False
 
