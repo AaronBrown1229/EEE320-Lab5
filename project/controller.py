@@ -100,8 +100,6 @@ class MoveBillController(Controller):
     def __init__(self, view, restaurant, bill, table):
         super().__init__(view, restaurant, bill)
         self.table = table
-        # will be used to set the colour of the seat
-        self.seat_value = [0] * table.n_seats
         self.moveTo = -1
         self.moveFrom = -1
 
@@ -109,7 +107,6 @@ class MoveBillController(Controller):
         self.view.create_MoveBill_ui(self.table)
 
     def seat_touched(self, seat_number):
-        self.seat_value[seat_number] = 1
         if self.moveTo == -1:
             self.moveTo = seat_number
         else:
